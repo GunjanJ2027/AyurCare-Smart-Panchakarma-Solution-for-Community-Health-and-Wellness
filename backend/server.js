@@ -1,4 +1,4 @@
-// backend/server.js
+// backend/server.js server files 
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -7,7 +7,7 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+// Middleware server files
 app.use(cors());
 app.use(express.json());
 

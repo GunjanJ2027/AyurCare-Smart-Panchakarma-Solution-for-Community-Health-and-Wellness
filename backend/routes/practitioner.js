@@ -63,6 +63,32 @@ router.put('/patient/:id/dosha', auth, async (req, res) => {
     res.status(500).send('Server Error');
   }
 });
+// PUT /api/practitioner/appointment/:id/status - Approve or Decline Appointment
+router.put('/appointment/:id/status', auth, async (req, res) => {
+  try {
+    // Security check
+    if (req.user.role !== 'Practitioner') {
+      return res.status(403).json({ message: 'Access denied: Practitioners only' });
+    }
 
+    const { status } = req.body;
+
+    // Find the appointment and update its status
+    const updatedAppt = await Appointment.findByIdAndUpdate(
+      req.params.id, 
+      { status: status },
+      { new: true } 
+    );
+
+    if (!updatedAppt) {
+      return res.status(404).json({ message: 'Appointment not found' });
+    }
+
+    res.json(updatedAppt);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
 // Make sure this is always at the very bottom!
 module.exports = router;
