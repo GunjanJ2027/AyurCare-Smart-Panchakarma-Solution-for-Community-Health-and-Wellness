@@ -1,8 +1,13 @@
 // src/pages/AdminDashboard.jsx
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
 import { LayoutDashboard, Users, Activity, HeartHandshake, LogOut, Menu, TrendingUp, Map, ShieldCheck, Leaf, CheckCircle2, History } from 'lucide-react';
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+=======
+import { LayoutDashboard, Users, Activity, HeartHandshake, LogOut, Menu, TrendingUp, Map, Plus, Edit2, ShieldCheck, Leaf, CheckCircle2, X } from 'lucide-react';
+import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts';
+>>>>>>> 838476523b6aca003ac7d8524ca494fe717ff54d
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -23,12 +28,27 @@ export default function AdminDashboard() {
 
   const COLORS = ['#10B981', '#3B82F6', '#8B5CF6', '#F59E0B', '#EF4444'];
 
+<<<<<<< HEAD
+=======
+  // --- THERAPY MANAGEMENT STATE ---
+  const [therapies, setTherapies] = useState([
+    { id: 1, name: 'Shirodhara', duration: '45 min', pre: 'Light food only, wash hair', post: 'Avoid direct sun and cold wind' },
+    { id: 2, name: 'Abhyanga', duration: '60 min', pre: 'Empty stomach for 2 hours', post: 'Drink warm water, rest for 1 hour' },
+    { id: 3, name: 'Basti', duration: '30 min', pre: 'Consume prescribed light diet', post: 'Strictly avoid cold beverages' },
+  ]);
+
+  // --- NEW: ADD THERAPY MODAL STATES ---
+  const [showAddTherapyModal, setShowAddTherapyModal] = useState(false);
+  const [newTherapy, setNewTherapy] = useState({ name: '', duration: '', pre: '', post: '' });
+
+>>>>>>> 838476523b6aca003ac7d8524ca494fe717ff54d
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     navigate('/');
   };
 
+<<<<<<< HEAD
   // --- FETCH LIVE DATA ON LOAD ---
   useEffect(() => {
     const fetchLiveStats = async () => {
@@ -98,6 +118,66 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex relative">
+=======
+  // --- NEW: HANDLE FORM SUBMISSION ---
+  const handleAddTherapySubmit = (e) => {
+    e.preventDefault();
+    // Generate a new ID for the mock data
+    const newId = therapies.length > 0 ? Math.max(...therapies.map(t => t.id)) + 1 : 1;
+    
+    const addedTherapy = {
+      id: newId,
+      name: newTherapy.name,
+      duration: newTherapy.duration,
+      pre: newTherapy.pre,
+      post: newTherapy.post
+    };
+
+    // Add to the list and close modal
+    setTherapies([...therapies, addedTherapy]);
+    setShowAddTherapyModal(false);
+    
+    // Reset form
+    setNewTherapy({ name: '', duration: '', pre: '', post: '' }); 
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 flex relative">
+
+      {/* --- NEW: ADD THERAPY MODAL --- */}
+      {showAddTherapyModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-xl max-w-md w-full overflow-hidden animate-fade-in">
+            <div className="bg-green-700 p-4 flex justify-between items-center text-white">
+              <h2 className="text-xl font-bold flex items-center gap-2"><Plus size={24}/> Add New Therapy</h2>
+              <button onClick={() => setShowAddTherapyModal(false)} className="text-green-200 hover:text-white transition-colors"><X size={24} /></button>
+            </div>
+            <form onSubmit={handleAddTherapySubmit} className="p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Therapy Name</label>
+                <input type="text" required value={newTherapy.name} onChange={(e) => setNewTherapy({...newTherapy, name: e.target.value})} className="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-green-600 focus:border-green-600" placeholder="e.g., Vamana" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Duration</label>
+                <input type="text" required value={newTherapy.duration} onChange={(e) => setNewTherapy({...newTherapy, duration: e.target.value})} className="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-green-600 focus:border-green-600" placeholder="e.g., 45 min" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Pre-Procedure Guidelines</label>
+                <textarea required value={newTherapy.pre} onChange={(e) => setNewTherapy({...newTherapy, pre: e.target.value})} className="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-green-600 focus:border-green-600" rows="2" placeholder="e.g., Light food only"></textarea>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Post-Procedure Recovery</label>
+                <textarea required value={newTherapy.post} onChange={(e) => setNewTherapy({...newTherapy, post: e.target.value})} className="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-green-600 focus:border-green-600" rows="2" placeholder="e.g., Avoid direct sun and cold wind"></textarea>
+              </div>
+              <div className="pt-4 flex justify-end gap-3 border-t border-gray-100">
+                <button type="button" onClick={() => setShowAddTherapyModal(false)} className="px-4 py-2 text-gray-600 font-medium hover:bg-gray-100 rounded-lg">Cancel</button>
+                <button type="submit" className="px-6 py-2 bg-green-700 text-white font-medium rounded-lg hover:bg-green-800 transition-colors">Save Therapy</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+>>>>>>> 838476523b6aca003ac7d8524ca494fe717ff54d
       
       {/* Sidebar */}
       <div className={`${isSidebarOpen ? 'w-64' : 'w-20'} bg-gray-900 text-white transition-all duration-300 flex flex-col z-20`}>
@@ -110,11 +190,19 @@ export default function AdminDashboard() {
           <button onClick={() => setActiveTab('overview')} className={`w-full flex items-center space-x-3 p-3 rounded-lg transition-colors ${activeTab === 'overview' ? 'bg-green-600 font-medium text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white'}`}>
             <LayoutDashboard size={20} />{isSidebarOpen && <span>Platform Overview</span>}
           </button>
+<<<<<<< HEAD
           <button onClick={() => setActiveTab('completed')} className={`w-full flex items-center space-x-3 p-3 rounded-lg transition-colors ${activeTab === 'completed' ? 'bg-green-600 font-medium text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white'}`}>
             <History size={20} />{isSidebarOpen && <span>Completed Sessions</span>}
           </button>
           <button onClick={() => setActiveTab('impact')} className={`w-full flex items-center space-x-3 p-3 rounded-lg transition-colors ${activeTab === 'impact' ? 'bg-green-600 font-medium text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white'}`}>
             <HeartHandshake size={20} />{isSidebarOpen && <span>NGO Impact Metrics</span>}
+=======
+          <button onClick={() => setActiveTab('impact')} className={`w-full flex items-center space-x-3 p-3 rounded-lg transition-colors ${activeTab === 'impact' ? 'bg-green-600 font-medium text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white'}`}>
+            <HeartHandshake size={20} />{isSidebarOpen && <span>NGO Impact Metrics</span>}
+          </button>
+          <button onClick={() => setActiveTab('therapies')} className={`w-full flex items-center space-x-3 p-3 rounded-lg transition-colors ${activeTab === 'therapies' ? 'bg-green-600 font-medium text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white'}`}>
+            <Activity size={20} />{isSidebarOpen && <span>Therapy Management</span>}
+>>>>>>> 838476523b6aca003ac7d8524ca494fe717ff54d
           </button>
         </nav>
 
@@ -283,6 +371,67 @@ export default function AdminDashboard() {
                   </p>
                 </div>
               </div>
+<<<<<<< HEAD
+=======
+
+              <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-96 flex flex-col mt-6">
+                <h3 className="text-lg font-bold text-gray-800 mb-4">Community Health Improvement Trend (%)</h3>
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={recoveryTrends}>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <XAxis dataKey="month" />
+                    <YAxis domain={[0, 100]} />
+                    <Tooltip />
+                    <Line type="monotone" dataKey="recoveryScore" stroke="#8B5CF6" strokeWidth={4} name="Overall Health Score" dot={{r: 6}} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 3: THERAPY MANAGEMENT SYSTEM */}
+          {activeTab === 'therapies' && (
+            <div className="animate-fade-in bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+              <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                <div>
+                  <h2 className="text-xl font-bold text-gray-800">Master Therapy Catalog</h2>
+                  <p className="text-sm text-gray-500">Manage protocols, durations, and patient guidelines.</p>
+                </div>
+                
+                {/* --- UPDATED: Button now triggers the modal! --- */}
+                <button 
+                  onClick={() => setShowAddTherapyModal(true)} 
+                  className="flex items-center gap-2 bg-green-700 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-800 transition-colors"
+                >
+                  <Plus size={20} /> Add New Therapy
+                </button>
+              </div>
+              
+              <div className="p-6 space-y-6">
+                {therapies.map((therapy) => (
+                  <div key={therapy.id} className="border border-gray-200 rounded-xl p-5 hover:shadow-md transition-shadow relative bg-white">
+                    <button className="absolute top-5 right-5 text-gray-400 hover:text-green-600"><Edit2 size={20}/></button>
+                    
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="p-2 bg-blue-50 text-blue-600 rounded-lg"><Activity size={24}/></div>
+                      <h3 className="text-lg font-bold text-gray-900">{therapy.name}</h3>
+                      <span className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs font-bold">{therapy.duration}</span>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="bg-orange-50 p-4 rounded-lg border border-orange-100">
+                        <p className="text-xs font-bold text-orange-800 uppercase tracking-wider mb-1">Pre-Procedure Guidelines</p>
+                        <p className="text-gray-700 text-sm">{therapy.pre}</p>
+                      </div>
+                      <div className="bg-green-50 p-4 rounded-lg border border-green-100">
+                        <p className="text-xs font-bold text-green-800 uppercase tracking-wider mb-1">Post-Procedure Recovery</p>
+                        <p className="text-gray-700 text-sm">{therapy.post}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+>>>>>>> 838476523b6aca003ac7d8524ca494fe717ff54d
             </div>
           )}
 
@@ -291,3 +440,6 @@ export default function AdminDashboard() {
     </div>
   );
 }
+
+
+// my commit

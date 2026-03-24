@@ -124,4 +124,4 @@ export default function Signup() {
       </div>
     </div>
   );
-}
+} // minor signup fixes

@@ -12,3 +12,7 @@ env/
 # Build files
 frontend/dist/
 .DS_Store
+# Python / AI Service
+ai-service/venv/
+ai-service/__pycache__/
+*.pkl
