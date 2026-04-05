@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* AyurBot Markdown Styling */
+.ayurbot-markdown p {
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+/* Remove bottom margin from the very last paragraph to keep the bubble tight */
+.ayurbot-markdown p:last-child {
+  margin-bottom: 0;
+}
+
+/* Make the bullet points look clean and visible in Tailwind */
+.ayurbot-markdown ul {
+  padding-left: 20px;
+  margin-bottom: 12px;
+  list-style-type: disc; /* Crucial for Tailwind! */
+}
+
+.ayurbot-markdown li {
+  margin-bottom: 6px;
+}
+
+/* Make the bold text pop with an Ayurvedic Green color */
+.ayurbot-markdown strong {
+  color: #2e7d32; 
+  font-weight: 700;
+}

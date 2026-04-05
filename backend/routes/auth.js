@@ -3,68 +3,60 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const auth = require('../middleware/auth'); // <--- ADDED THIS IMPORT
 const User = require('../models/User');
-const Patient = require('../models/Patient');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'ayurcare_super_secret_key_for_midterm';
-
-// --- REGISTER ROUTE ---
+// ==========================================
+// 1. REGISTER A NEW USER
+// ==========================================
 router.post('/register', async (req, res) => {
   try {
-    const { email, password, role, fullName } = req.body;
+    const { email, password, role, name } = req.body;
 
     // Check if user already exists
     let user = await User.findOne({ email });
     if (user) {
-      return res.status(400).json({ message: 'User already exists' });
+      return res.status(400).json({ error: "User already exists" });
     }
 
-    // Hash the password
+    // Hash the password securely
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create the User
+    // Create the new user
     user = new User({
+      name, // Added name field here
       email,
       password: hashedPassword,
       role: role || 'Patient'
     });
+
     await user.save();
+    res.status(201).json({ message: "User registered successfully!" });
 
-    // If the user is a Patient, automatically create their Patient Profile
-    if (user.role === 'Patient') {
-      const patientProfile = new Patient({
-        userId: user._id,
-        fullName: fullName || 'New Patient'
-      });
-      await patientProfile.save();
-    }
-
-    res.status(201).json({ message: 'User registered successfully!' });
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
+    console.error("Register Error:", err);
+    res.status(500).json({ error: "Server Error" });
   }
 });
 
-// --- LOGIN ROUTE ---
+// ==========================================
+// 2. LOGIN
+// ==========================================
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Find the user
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({ message: 'Invalid Credentials' });
+      return res.status(400).json({ error: "Invalid credentials" });
     }
 
-    // Check the password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid Credentials' });
+      return res.status(400).json({ error: "Invalid credentials" });
     }
 
-    // Create the JWT Token payload
     const payload = {
       user: {
         id: user.id,
@@ -72,13 +64,30 @@ router.post('/login', async (req, res) => {
       }
     };
 
-    // Sign the token and send it back to the frontend
-    jwt.sign(payload, JWT_SECRET, { expiresIn: '5h' }, (err, token) => {
-      if (err) throw err;
-      res.json({ token, role: user.role });
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' });
+
+    res.json({
+      token: token,
+      role: user.role,
+      message: `Welcome back, ${user.role}!`
     });
+
   } catch (err) {
-    console.error(err.message);
+    console.error("Login Error:", err);
+    res.status(500).json({ error: "Server Error" });
+  }
+});
+
+// ==========================================
+// 3. GET ALL REGISTERED PATIENTS (For Dashboard)
+// ==========================================
+router.get('/users/patients', auth, async (req, res) => {
+  try {
+    // Finds all users where role is 'Patient', returns name, email, and ID
+    const patients = await User.find({ role: 'Patient' }).select('name email _id');
+    res.json(patients);
+  } catch (err) {
+    console.error("Fetch Patients Error:", err);
     res.status(500).send('Server Error');
   }
 });

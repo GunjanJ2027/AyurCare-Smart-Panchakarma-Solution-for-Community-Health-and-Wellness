@@ -7,9 +7,9 @@ import AdminDashboard from './pages/AdminDashboard';
 import PatientDashboard from './pages/PatientDashboard';
 import PractitionerDashboard from './pages/PractitionerDashboard';
 import AIPredictor from './pages/AIPredictor';
-
+import DoshaPredictor from './pages/DoshaPredictor';
 // --- HERE IS THE MISSING IMPORT! ---
-import ChatbotWidget from './components/ChatbotWidget'; 
+
 
 function App() {
   return (
@@ -22,10 +22,11 @@ function App() {
         <Route path="/patient-dashboard" element={<PatientDashboard />} />
         <Route path="/practitioner-dashboard" element={<PractitionerDashboard />} />
         <Route path="/ai-predictor" element={<AIPredictor />} />
+        <Route path="/ai-predictor" element={<DoshaPredictor />} />
       </Routes>
       
       {/* Floating Chatbot visible on all pages */}
-      <ChatbotWidget /> 
+      
     </Router>
   );
 }
