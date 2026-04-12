@@ -416,7 +416,7 @@ class _PatientDashboardState extends State<PatientDashboard> {
               pw.Text("Active Prescriptions & Protocol", style: pw.TextStyle(fontSize: 18, fontWeight: pw.FontWeight.bold, color: PdfColors.teal800)),
               pw.Divider(),
               if (_dynamicMedicines.isEmpty) pw.Text("No active medicines prescribed.")
-              else ..._dynamicMedicines.map((med) => pw.Bullet(text: "${med['name']} - ${med['time']}")).toList(),
+              else ..._dynamicMedicines.map((med) => pw.Bullet(text: "${med['name']} - ${med['time']}")),
               pw.SizedBox(height: 30),
 
               // Past Treatments
@@ -434,7 +434,7 @@ class _PatientDashboardState extends State<PatientDashboard> {
                     ]
                   )
                 );
-              }).toList(),
+              }),
             ],
           );
         },
@@ -764,7 +764,7 @@ class _PatientDashboardState extends State<PatientDashboard> {
                   ],
                 ),
               ),
-            )).toList(),
+            )),
         ],
       ),
     );
@@ -831,7 +831,7 @@ class _PatientDashboardState extends State<PatientDashboard> {
               ],
             ),
           );
-        }).toList(),
+        }),
 
         const Divider(height: 40),
 
@@ -975,7 +975,7 @@ class _PatientDashboardState extends State<PatientDashboard> {
               ),
             ),
           ),
-        )).toList(),
+        )),
       ],
     );
   }
